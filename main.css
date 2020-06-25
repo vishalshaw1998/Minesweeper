@@ -16,5 +16,33 @@ span {
     font-size: 50px;
 }
 a {
+    background-color: white;
+    border: 2px solid black;
+    color: green;
+    padding: 5px 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    margin: 10px 30px;
     text-decoration: none;
+    height: 25px;
+    width: 150px;
+    transition: width 1s, height 1s, padding 1s;
+}
+a:hover {
+    background-color: red;
+    width: 155px;
+    height: 30px;
+    padding: 15px 15px;
+}
+
+.margin-top {
+    margin-top: 10%;
+}
+
+.padding-top {
+    padding-top: 10%;
+}
+.font-krona {
+    font-family: "Krona One", sans-serif;
 }
