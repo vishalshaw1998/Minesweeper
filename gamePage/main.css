@@ -11,3 +11,13 @@
 .margin-top {
     margin-top: 20px;
 }
+.col {
+    border: 1px solid black;
+    padding: 5px 5px 5px 5px;
+    text-align: center;
+    width: 25px;
+    height: 30px;
+}
+.row-3 {
+    margin-top: 25px;
+}

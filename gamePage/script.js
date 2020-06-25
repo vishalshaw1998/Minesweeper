@@ -26,12 +26,8 @@ row2col1.innerHTML =
     "<button type='button' id = 'play' class='btn btn-dark'>Play</button>";
 
 row2.appendChild(row2col1);
-// var btn1 = document.createElement("button");
-// btn1.setAttribute("id", "dummy");
-// btn1.innerText = "Hello";
 container.appendChild(row1);
 container.appendChild(row2);
-// container.appendChild(btn1);
 document.body.appendChild(container);
 
 var btn = document.getElementById("play");
@@ -57,3 +53,54 @@ function myTimer() {
         mints.innerText = "0" + 0;
     }
 }
+
+arrOfElements = [];
+
+for (var i = 3; i < 19; i++) {
+    var tempRow = document.createElement("div");
+    tempRow.setAttribute("class", "row " + `row-${i}`);
+    for (var j = 1; j < 17; j++) {
+        var tempCol = document.createElement("div");
+        tempCol.setAttribute("class", "col inside " + `col-${i}${j}`);
+        var tempDiv = document.createElement("div");
+        tempDiv.innerText = "Hello";
+        tempCol.appendChild(tempDiv);
+        tempRow.appendChild(tempCol);
+    }
+    console.log(tempRow);
+    container.appendChild(tempRow);
+    arrOfElements.push(tempRow);
+}
+console.log(arrOfElements);
+//Random Mines
+for (var i = 0; i < 40; i++) {
+    randomRow = Math.floor(Math.random() * 16);
+    randomCol = Math.floor(Math.random() * 16);
+    if (
+        arrOfElements[randomRow].childNodes[randomCol].childNodes[0]
+            .innerText == "M"
+    ) {
+        while (
+            arrOfElements[randomRow].childNodes[randomCol].childNodes[0]
+                .innerText == "M"
+        ) {
+            randomRow = Math.floor(Math.random() * 16);
+            randomCol = Math.floor(Math.random() * 16);
+        }
+    }
+    arrOfElements[randomRow].childNodes[randomCol].childNodes[0].innerText =
+        "M";
+}
+
+arrOfElements.forEach((item) => {
+    item.childNodes.forEach((item) => {
+        item.childNodes[0].style.visibility = "hidden";
+    });
+});
+
+var resArr = document.querySelectorAll(".inside");
+resArr.forEach((item) => {
+    item.addEventListener("click", () => {
+        item.childNodes[0].style.visibility = "visible";
+    });
+});
