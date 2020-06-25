@@ -35,7 +35,7 @@ btn.addEventListener("click", () => {
     d = new Date().getTime() + 300000;
     interval = setInterval(myTimer, 1000);
     var score = document.getElementById("score");
-    score.innerText = 0;
+    score.innerHTML = 0;
 });
 
 //set Timer running
@@ -46,11 +46,11 @@ function myTimer() {
     var mints = document.getElementById("minutes");
     var inMins = Math.floor((dis % (1000 * 60 * 60)) / (1000 * 60));
     var inSec = Math.floor((dis % (1000 * 60)) / 1000);
-    sec.innerText = inSec;
-    mints.innerText = "0" + inMins;
+    sec.innerHTML = inSec;
+    mints.innerHTML = "0" + inMins;
     if (dis < 0) {
-        sec.innerText = 0;
-        mints.innerText = "0" + 0;
+        sec.innerHTML = 0;
+        mints.innerHTML = "0" + 0;
     }
 }
 
@@ -61,9 +61,9 @@ for (var i = 3; i < 19; i++) {
     tempRow.setAttribute("class", "row " + `row-${i}`);
     for (var j = 1; j < 17; j++) {
         var tempCol = document.createElement("div");
-        tempCol.setAttribute("class", "col inside " + `col-${i}${j}`);
+        tempCol.setAttribute("class", "col inside " + `col-${i}--${j}`);
         var tempDiv = document.createElement("div");
-        tempDiv.innerText = "Hello";
+        tempDiv.innerHTML = "";
         tempCol.appendChild(tempDiv);
         tempRow.appendChild(tempCol);
     }
@@ -78,18 +78,18 @@ for (var i = 0; i < 40; i++) {
     randomCol = Math.floor(Math.random() * 16);
     if (
         arrOfElements[randomRow].childNodes[randomCol].childNodes[0]
-            .innerText == "M"
+            .innerHTML == "Mi"
     ) {
         while (
             arrOfElements[randomRow].childNodes[randomCol].childNodes[0]
-                .innerText == "M"
+                .innerHTML == "Mi"
         ) {
             randomRow = Math.floor(Math.random() * 16);
             randomCol = Math.floor(Math.random() * 16);
         }
     }
-    arrOfElements[randomRow].childNodes[randomCol].childNodes[0].innerText =
-        "M";
+    arrOfElements[randomRow].childNodes[randomCol].childNodes[0].innerHTML =
+        "Mi";
 }
 
 arrOfElements.forEach((item) => {
@@ -103,4 +103,138 @@ resArr.forEach((item) => {
     item.addEventListener("click", () => {
         item.childNodes[0].style.visibility = "visible";
     });
+});
+
+// var temp = resArr[20];
+// var attr = temp.getAttribute("class");
+// attr = attr.split("-");
+// var row = attr[attr.length - 3];
+// var col = attr[attr.length - 1];
+// var leftElement = document.getElementsByClassName(`col-${row}--${col - 1}`)[0];
+// if (leftElement.childNodes[0].innerHTML == "") {
+//     if (temp.childNodes[0].innerHTML == "") {
+//         console.log("Hello");
+//     } else {
+//         console.log("Hii");
+//     }
+// }
+
+resArr.forEach((item) => {
+    var tempStr = item.getAttribute("class");
+    tempStr = tempStr.split("-");
+    var tempRow1 = parseInt(tempStr[tempStr.length - 3]);
+    var tempCol1 = parseInt(tempStr[tempStr.length - 1]);
+    //checkleft
+    if (item.childNodes[0].innerHTML != "Mi") {
+        if (tempCol1 - 1 != 0) {
+            var leftElement = document.getElementsByClassName(
+                `col-${tempRow1}--${tempCol1 - 1}`
+            )[0];
+            if (leftElement.childNodes[0].innerHTML == "Mi") {
+                if (item.childNodes[0].innerHTML == "") {
+                    item.childNodes[0].innerHTML = 1;
+                } else {
+                    item.childNodes[0].innerHTML += 1;
+                }
+            }
+        }
+        //checkRight
+        if (tempCol1 + 1 != 17) {
+            var rightElement = document.getElementsByClassName(
+                `col-${tempRow1}--${tempCol1 + 1}`
+            )[0];
+            if (rightElement.childNodes[0].innerHTML == "Mi") {
+                if (item.childNodes[0].innerHTML == "") {
+                    item.childNodes[0].innerHTML = 1;
+                } else {
+                    item.childNodes[0].innerHTML =
+                        parseInt(item.childNodes[0].innerHTML) + parseInt(1);
+                }
+            }
+        }
+        //CheckTop
+        if (tempRow1 - 1 != 2) {
+            var topElement = document.getElementsByClassName(
+                `col-${tempRow1 - 1}--${tempCol1}`
+            )[0];
+            if (topElement.childNodes[0].innerHTML == "Mi") {
+                if (item.childNodes[0].innerHTML == "") {
+                    item.childNodes[0].innerHTML = parseInt(1);
+                } else {
+                    item.childNodes[0].innerHTML =
+                        parseInt(item.childNodes[0].innerHTML) + parseInt(1);
+                }
+            }
+        }
+        //Checkottom
+        if (tempRow1 + 1 != 19) {
+            var bottomElement = document.getElementsByClassName(
+                `col-${tempRow1 + 1}--${tempCol1}`
+            )[0];
+            if (bottomElement.childNodes[0].innerHTML == "Mi") {
+                if (item.childNodes[0].innerHTML == "") {
+                    item.childNodes[0].innerHTML = parseInt(1);
+                } else {
+                    item.childNodes[0].innerHTML =
+                        parseInt(item.childNodes[0].innerHTML) + parseInt(1);
+                }
+            }
+        }
+        //Check Diagonal NW
+        if (tempRow1 - 1 != 2 && tempCol1 - 1 != 0) {
+            var diagonalUpElement = document.getElementsByClassName(
+                `col-${tempRow1 - 1}--${tempCol1 - 1}`
+            )[0];
+            if (diagonalUpElement.childNodes[0].innerHTML == "Mi") {
+                if (item.childNodes[0].innerHTML == "") {
+                    item.childNodes[0].innerHTML = parseInt(1);
+                } else {
+                    item.childNodes[0].innerHTML =
+                        parseInt(item.childNodes[0].innerHTML) + parseInt(1);
+                }
+            }
+        }
+        //Check Diagonal SE
+        if (tempRow1 + 1 != 19 && tempCol1 + 1 != 17) {
+            var diagonalDownElement = document.getElementsByClassName(
+                `col-${tempRow1 + 1}--${tempCol1 + 1}`
+            )[0];
+            if (diagonalDownElement.childNodes[0].innerHTML == "Mi") {
+                if (item.childNodes[0].innerHTML == "") {
+                    item.childNodes[0].innerHTML = parseInt(1);
+                } else {
+                    item.childNodes[0].innerHTML =
+                        parseInt(item.childNodes[0].innerHTML) + parseInt(1);
+                }
+            }
+        }
+        //Check Diagonal NE
+        if (tempRow1 - 1 != 2 && tempCol1 + 1 != 17) {
+            var diagonalNEElement = document.getElementsByClassName(
+                `col-${tempRow1 - 1}--${tempCol1 + 1}`
+            )[0];
+            if (diagonalNEElement.childNodes[0].innerHTML == "Mi") {
+                if (item.childNodes[0].innerHTML == "") {
+                    item.childNodes[0].innerHTML = parseInt(1);
+                } else {
+                    item.childNodes[0].innerHTML =
+                        parseInt(item.childNodes[0].innerHTML) + parseInt(1);
+                }
+            }
+        }
+        //Check Diagonal SW
+        if (tempRow1 + 1 != 19 && tempCol1 - 1 != 0) {
+            var diagonalSWElement = document.getElementsByClassName(
+                `col-${tempRow1 + 1}--${tempCol1 - 1}`
+            )[0];
+            if (diagonalSWElement.childNodes[0].innerHTML == "Mi") {
+                if (item.childNodes[0].innerHTML == "") {
+                    item.childNodes[0].innerHTML = parseInt(1);
+                } else {
+                    item.childNodes[0].innerHTML =
+                        parseInt(item.childNodes[0].innerHTML) + parseInt(1);
+                }
+            }
+        }
+    }
 });
