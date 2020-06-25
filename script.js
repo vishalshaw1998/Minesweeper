@@ -8,7 +8,7 @@ divForText.innerHTML = "<span>Lets Play Minesweeper</span>";
 var divForButton = document.createElement("div");
 divForButton.setAttribute("class", "text-center margin-top");
 var a = document.createElement("a");
-a.setAttribute("href", "#");
+a.setAttribute("href", "./gamePage/index.html");
 a.innerHTML = "Click to Play";
 divForButton.appendChild(a);
 

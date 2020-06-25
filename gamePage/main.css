@@ -1,0 +1,13 @@
+.align-left {
+    text-align: right;
+}
+.ctdn {
+    padding-right: 10px;
+}
+.text-bold {
+    font-size: larger;
+    font-weight: bold;
+}
+.margin-top {
+    margin-top: 20px;
+}
