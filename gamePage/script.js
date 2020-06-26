@@ -1,5 +1,5 @@
 var container = document.createElement("div");
-container.setAttribute("class", "container");
+container.setAttribute("class", "container-fluid");
 
 var row1 = document.createElement("div");
 row1.setAttribute("class", "row");
@@ -12,7 +12,7 @@ row1col1.innerHTML =
 row1.appendChild(row1col1);
 
 var row1col2 = document.createElement("div");
-row1col2.setAttribute("class", "col-sm-6 align-left ");
+row1col2.setAttribute("class", "col-sm-6 align-right ");
 row1col2.innerHTML =
     "<span class = 'ctdn text-bold'>Time Countdown</span><span span id = 'timer' class = 'ctdn text-bold'><span id='minutes'>00</span>:<span id='seconds'>00</span></span>";
 
@@ -25,9 +25,13 @@ row2col1.setAttribute("class", "col-sm-12 offset-5");
 row2col1.innerHTML =
     "<button type='button' id = 'play' class='btn btn-dark'>Play</button>";
 
+var forTheGrid = document.createElement("div");
+forTheGrid.setAttribute("class", "forGrid bottom-margin");
+
 row2.appendChild(row2col1);
 container.appendChild(row1);
 container.appendChild(row2);
+container.appendChild(forTheGrid);
 document.body.appendChild(container);
 
 var btn = document.getElementById("play");
@@ -35,7 +39,9 @@ btn.addEventListener("click", () => {
     d = new Date().getTime() + 300000;
     interval = setInterval(myTimer, 1000);
     var score = document.getElementById("score");
+    forTheGrid.style.visibility = "visible";
     score.innerHTML = 0;
+    btn.setAttribute("disabled", "");
 });
 
 //set Timer running
@@ -49,8 +55,34 @@ function myTimer() {
     sec.innerHTML = inSec;
     mints.innerHTML = "0" + inMins;
     if (dis < 0) {
-        sec.innerHTML = 0;
-        mints.innerHTML = "0" + 0;
+        clearInterval(interval);
+        var score1 = document.getElementById("score").innerHTML;
+        console.log(score1);
+        while (container.childNodes.length != 0) {
+            container.removeChild(container.childNodes[0]);
+        }
+        var divBoth = document.createElement("div");
+        divBoth.setAttribute("class", "margin-top1");
+        var tempForScore = document.createElement("div");
+        var textThankYou = document.createElement("div");
+        tempForScore.setAttribute("class", "center-align text-bold large");
+        textThankYou.setAttribute("class", "center-align text-bold large");
+        textThankYou.innerHTML = "Thank You For Playing";
+        tempForScore.innerHTML = "Your Score is : - " + "<br>" + score1;
+        divBoth.appendChild(textThankYou);
+        divBoth.appendChild(tempForScore);
+        container.setAttribute("id", "container1");
+        container.setAttribute("class", "fluid-container");
+
+        var divForButton = document.createElement("div");
+        divForButton.setAttribute("class", "text-center margin-top");
+        var a = document.createElement("a");
+        a.setAttribute("href", "../index.html");
+        a.innerHTML = "Go To Homepage";
+        divForButton.appendChild(a);
+
+        container.appendChild(divBoth);
+        container.appendChild(divForButton);
     }
 }
 
@@ -67,8 +99,7 @@ for (var i = 3; i < 19; i++) {
         tempCol.appendChild(tempDiv);
         tempRow.appendChild(tempCol);
     }
-    console.log(tempRow);
-    container.appendChild(tempRow);
+    forTheGrid.appendChild(tempRow);
     arrOfElements.push(tempRow);
 }
 console.log(arrOfElements);
@@ -219,18 +250,45 @@ resArr.forEach((item) => {
         }
     }
 });
-
+visitedParent = [];
 resArr.forEach((item) => {
     item.addEventListener("click", () => {
         item.childNodes[0].style.visibility = "visible";
         item.style.backgroundColor = "white";
 
         if (item.childNodes[0].innerHTML == "Mi") {
-            alert("Game Over");
-        }
-        if (item.childNodes[0].innerHTML == "") {
+            clearInterval(interval);
+            var score1 = document.getElementById("score").innerHTML;
+            console.log(score1);
+            while (container.childNodes.length != 0) {
+                container.removeChild(container.childNodes[0]);
+            }
+            var divBoth = document.createElement("div");
+            divBoth.setAttribute("class", "margin-top1");
+            var tempForScore = document.createElement("div");
+            var textThankYou = document.createElement("div");
+            tempForScore.setAttribute("class", "center-align text-bold large");
+            textThankYou.setAttribute("class", "center-align text-bold large");
+            textThankYou.innerHTML = "Thank You For Playing";
+            tempForScore.innerHTML = "Your Score is : - " + "<br>" + score1;
+            divBoth.appendChild(textThankYou);
+            divBoth.appendChild(tempForScore);
+            container.setAttribute("id", "container1");
+            container.setAttribute("class", "fluid-container");
+
+            var divForButton = document.createElement("div");
+            divForButton.setAttribute("class", "text-center margin-top");
+            var a = document.createElement("a");
+            a.setAttribute("href", "../index.html");
+            a.innerHTML = "Go To Homepage";
+            divForButton.appendChild(a);
+
+            container.appendChild(divBoth);
+            container.appendChild(divForButton);
+        } else if (item.childNodes[0].innerHTML == "") {
             var queue = [];
             var visited = [];
+            var withNumber = [];
             queue.push(item);
             while (queue.length != 0) {
                 temp = queue.shift();
@@ -242,6 +300,9 @@ resArr.forEach((item) => {
                 colOfTempBox = parseInt(
                     classOfTempBox[classOfTempBox.length - 1]
                 );
+                if (!visitedParent.includes(temp)) {
+                    visitedParent.push(temp);
+                }
                 //check left
                 if (colOfTempBox - 1 != 0) {
                     var leftOfTempBox = document.getElementsByClassName(
@@ -255,10 +316,19 @@ resArr.forEach((item) => {
                             visited.push(leftOfTempBox);
                             queue.push(leftOfTempBox);
                         }
+                        if (!visitedParent.includes(leftOfTempBox)) {
+                            visitedParent.push(leftOfTempBox);
+                        }
                     } else {
                         leftOfTempBox.childNodes[0].style.visibility =
                             "visible";
                         leftOfTempBox.style.backgroundColor = "white";
+                        if (!withNumber.includes(leftOfTempBox)) {
+                            withNumber.push(leftOfTempBox);
+                        }
+                        if (!visitedParent.includes(leftOfTempBox)) {
+                            visitedParent.push(leftOfTempBox);
+                        }
                     }
                 }
                 //check right
@@ -274,10 +344,19 @@ resArr.forEach((item) => {
                             visited.push(rightOfTempBox);
                             queue.push(rightOfTempBox);
                         }
+                        if (!visitedParent.includes(rightOfTempBox)) {
+                            visitedParent.push(rightOfTempBox);
+                        }
                     } else {
                         rightOfTempBox.childNodes[0].style.visibility =
                             "visible";
                         rightOfTempBox.style.backgroundColor = "white";
+                        if (!withNumber.includes(rightOfTempBox)) {
+                            withNumber.push(rightOfTempBox);
+                        }
+                        if (!visitedParent.includes(rightOfTempBox)) {
+                            visitedParent.push(rightOfTempBox);
+                        }
                     }
                 }
                 //check top
@@ -292,9 +371,18 @@ resArr.forEach((item) => {
                             visited.push(topOfTempBox);
                             queue.push(topOfTempBox);
                         }
+                        if (!visitedParent.includes(topOfTempBox)) {
+                            visitedParent.push(topOfTempBox);
+                        }
                     } else {
                         topOfTempBox.childNodes[0].style.visibility = "visible";
                         topOfTempBox.style.backgroundColor = "white";
+                        if (!withNumber.includes(topOfTempBox)) {
+                            withNumber.push(topOfTempBox);
+                        }
+                        if (!visitedParent.includes(topOfTempBox)) {
+                            visitedParent.push(topOfTempBox);
+                        }
                     }
                 }
                 //check bottom
@@ -310,10 +398,19 @@ resArr.forEach((item) => {
                             visited.push(bottomOfTempBox);
                             queue.push(bottomOfTempBox);
                         }
+                        if (!visitedParent.includes(bottomOfTempBox)) {
+                            visitedParent.push(bottomOfTempBox);
+                        }
                     } else {
                         bottomOfTempBox.childNodes[0].style.visibility =
                             "visible";
                         bottomOfTempBox.style.backgroundColor = "white";
+                        if (!withNumber.includes(bottomOfTempBox)) {
+                            withNumber.push(bottomOfTempBox);
+                        }
+                        if (!visitedParent.includes(bottomOfTempBox)) {
+                            visitedParent.push(bottomOfTempBox);
+                        }
                     }
                 }
                 //check NW
@@ -328,9 +425,18 @@ resArr.forEach((item) => {
                             visited.push(NWOfTempBox);
                             queue.push(NWOfTempBox);
                         }
+                        if (!visitedParent.includes(NWOfTempBox)) {
+                            visitedParent.push(NWOfTempBox);
+                        }
                     } else {
                         NWOfTempBox.childNodes[0].style.visibility = "visible";
                         NWOfTempBox.style.backgroundColor = "white";
+                        if (!withNumber.includes(NWOfTempBox)) {
+                            withNumber.push(NWOfTempBox);
+                        }
+                        if (!visitedParent.includes(NWOfTempBox)) {
+                            visitedParent.push(NWOfTempBox);
+                        }
                     }
                 }
                 //check NE
@@ -345,9 +451,18 @@ resArr.forEach((item) => {
                             visited.push(NEOfTempBox);
                             queue.push(NEOfTempBox);
                         }
+                        if (!visitedParent.includes(NEOfTempBox)) {
+                            visitedParent.push(NEOfTempBox);
+                        }
                     } else {
                         NEOfTempBox.childNodes[0].style.visibility = "visible";
                         NEOfTempBox.style.backgroundColor = "white";
+                        if (!withNumber.includes(NEOfTempBox)) {
+                            withNumber.push(NEOfTempBox);
+                        }
+                        if (!visitedParent.includes(NEOfTempBox)) {
+                            visitedParent.push(NEOfTempBox);
+                        }
                     }
                 }
                 //check SW
@@ -362,9 +477,18 @@ resArr.forEach((item) => {
                             visited.push(SWOfTempBox);
                             queue.push(SWOfTempBox);
                         }
+                        if (!visitedParent.includes(SWOfTempBox)) {
+                            visitedParent.push(SWOfTempBox);
+                        }
                     } else {
                         SWOfTempBox.childNodes[0].style.visibility = "visible";
                         SWOfTempBox.style.backgroundColor = "white";
+                        if (!withNumber.includes(SWOfTempBox)) {
+                            withNumber.push(SWOfTempBox);
+                        }
+                        if (!visitedParent.includes(SWOfTempBox)) {
+                            visitedParent.push(SWOfTempBox);
+                        }
                     }
                 }
                 //check SE
@@ -379,12 +503,61 @@ resArr.forEach((item) => {
                             visited.push(SEOfTempBox);
                             queue.push(SEOfTempBox);
                         }
+                        if (!visitedParent.includes(SEOfTempBox)) {
+                            visitedParent.push(SEOfTempBox);
+                        }
                     } else {
                         SEOfTempBox.childNodes[0].style.visibility = "visible";
                         SEOfTempBox.style.backgroundColor = "white";
+                        if (!withNumber.includes(SEOfTempBox)) {
+                            withNumber.push(SEOfTempBox);
+                        }
+                        if (!visitedParent.includes(SEOfTempBox)) {
+                            visitedParent.push(SEOfTempBox);
+                        }
                     }
                 }
             }
+            console.log(visited);
+            console.log(withNumber);
+        } else {
+            if (!visitedParent.includes(item)) {
+                visitedParent.push(item);
+            }
         }
+        console.log(visitedParent);
+        var score = document.getElementById("score");
+        if (visitedParent.length == 216) {
+            clearInterval(interval);
+            var score1 = document.getElementById("score").innerHTML;
+            console.log(score1);
+            while (container.childNodes.length != 0) {
+                container.removeChild(container.childNodes[0]);
+            }
+            var divBoth = document.createElement("div");
+            divBoth.setAttribute("class", "margin-top1");
+            var tempForScore = document.createElement("div");
+            var textThankYou = document.createElement("div");
+            tempForScore.setAttribute("class", "center-align text-bold large");
+            textThankYou.setAttribute("class", "center-align text-bold large");
+            textThankYou.innerHTML =
+                "Thank You For Playing You Have Won The Game";
+            tempForScore.innerHTML = "Your Score is : - " + "<br>" + score1;
+            divBoth.appendChild(textThankYou);
+            divBoth.appendChild(tempForScore);
+            container.setAttribute("id", "container1");
+            container.setAttribute("class", "fluid-container");
+
+            var divForButton = document.createElement("div");
+            divForButton.setAttribute("class", "text-center margin-top");
+            var a = document.createElement("a");
+            a.setAttribute("href", "../index.html");
+            a.innerHTML = "Go To Homepage";
+            divForButton.appendChild(a);
+
+            container.appendChild(divBoth);
+            container.appendChild(divForButton);
+        }
+        score.innerHTML = visitedParent.length;
     });
 });
