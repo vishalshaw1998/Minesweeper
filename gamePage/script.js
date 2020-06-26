@@ -23,7 +23,7 @@ row2.setAttribute("class", "row margin-top");
 var row2col1 = document.createElement("div");
 row2col1.setAttribute("class", "col-sm-12 offset-5");
 row2col1.innerHTML =
-    "<button type='button' id = 'play' class='btn btn-dark'>Play</button>";
+    "<button type='button' id = 'play' class='btn btn-dark btn-lg'>Play</button>";
 
 var forTheGrid = document.createElement("div");
 forTheGrid.setAttribute("class", "forGrid bottom-margin");
